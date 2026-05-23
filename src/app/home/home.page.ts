@@ -1,38 +1,37 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonInput,
-  IonButton,
-  IonCard,
-  IonCardContent,
-  IonImg
-} from '@ionic/angular/standalone';
+import { IonicModule } from '@ionic/angular';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.page.html',
-  styleUrls: ['./home.page.scss'],
+  templateUrl: 'home.page.html',
+  styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonContent,
-    IonInput,
-    IonButton,
-    IonCard,
-    IonCardContent,
-    IonImg
-  ]
+  imports: [IonicModule, CommonModule, FormsModule],
 })
 export class HomePage {
-  searchTerm = '';
+  searchTerm: string = '';
+
+  movies = [
+    {
+      title: 'The Dark Knight',
+      year: 2008,
+      image: 'https://via.placeholder.com/100x150'
+    },
+    {
+      title: 'Inception',
+      year: 2010,
+      image: 'https://via.placeholder.com/100x150'
+    },
+    {
+      title: 'Interstellar',
+      year: 2014,
+      image: 'https://via.placeholder.com/100x150'
+    }
+  ];
+
+  searchMovies() {
+    alert('Searching for: ' + this.searchTerm);
+  }
 }
