@@ -1,0 +1,7 @@
+{
+  "name": "G00425757",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

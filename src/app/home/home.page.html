@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>G00425757</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-input
+    label="Search"
+    label-placement="stacked"
+    placeholder="Movie Name"
+    [(ngModel)]="searchTerm">
+  </ion-input>
+
+  <ion-button expand="block">
+    SEARCH
+  </ion-button>
+
+  <h2>Today's Trending Movies</h2>
+
+  <ion-card>
+    <ion-img src="https://via.placeholder.com/300x450"></ion-img>
+    <ion-card-content>
+      Movie results will appear here
+    </ion-card-content>
+  </ion-card>
+</ion-content>
