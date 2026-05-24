@@ -1,20 +1,53 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { IonicModule } from '@ionic/angular';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-movie-details',
   templateUrl: './movie-details.page.html',
   styleUrls: ['./movie-details.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [
+    CommonModule,
+    IonicModule,
+    HttpClientModule
+  ]
 })
 export class MovieDetailsPage implements OnInit {
 
-  constructor() { }
+  movie: any;
+  cast: any[] = [];
+  crew: any[] = [];
 
-  ngOnInit() {
+  apiKey = 'aec8cb7579247fdf0ce50a43711f7308';
+
+  constructor(private http: HttpClient) {
+    const nav = history.state;
+    this.movie = nav.movie;
   }
 
+  ngOnInit() {
+    if (this.movie) {
+      this.loadCredits();
+    }
+  }
+
+  loadCredits() {
+    const url =
+      `https://api.themoviedb.org/3/movie/${this.movie.id}/credits?api_key=${this.apiKey}`;
+
+    this.http.get<any>(url).subscribe(response => {
+      this.cast = response.cast;
+      this.crew = response.crew;
+    });
+  }
+
+  getProfileUrl(path: string) {
+    if (!path) {
+      return '';
+    }
+
+    return `https://image.tmdb.org/t/p/w200${path}`;
+  }
 }
