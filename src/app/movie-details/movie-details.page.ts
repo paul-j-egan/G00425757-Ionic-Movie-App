@@ -19,6 +19,7 @@ export class MovieDetailsPage implements OnInit {
   movie: any;
   cast: any[] = [];
   crew: any[] = [];
+  isFavourite = false;
 
   apiKey = 'aec8cb7579247fdf0ce50a43711f7308';
 
@@ -30,6 +31,7 @@ export class MovieDetailsPage implements OnInit {
   ngOnInit() {
     if (this.movie) {
       this.loadCredits();
+      this.checkFavourite();
     }
   }
 
@@ -49,5 +51,29 @@ export class MovieDetailsPage implements OnInit {
     }
 
     return `https://image.tmdb.org/t/p/w200${path}`;
+  }
+
+  checkFavourite() {
+    const favourites =
+      JSON.parse(localStorage.getItem('favourites') || '[]');
+
+    this.isFavourite =
+      favourites.some((fav: any) => fav.id === this.movie.id);
+  }
+
+  toggleFavourite() {
+    let favourites =
+      JSON.parse(localStorage.getItem('favourites') || '[]');
+
+    if (this.isFavourite) {
+      favourites =
+        favourites.filter((fav: any) => fav.id !== this.movie.id);
+    } else {
+      favourites.push(this.movie);
+    }
+
+    localStorage.setItem('favourites', JSON.stringify(favourites));
+
+    this.checkFavourite();
   }
 }

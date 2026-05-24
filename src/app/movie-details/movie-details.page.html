@@ -16,6 +16,10 @@
     </ion-card-content>
   </ion-card>
 
+  <ion-button expand="block" (click)="toggleFavourite()">
+    {{ isFavourite ? 'Remove From Favourites' : 'Add To Favourites' }}
+  </ion-button>
+
   <h2>Cast</h2>
 
   <ion-card *ngFor="let person of cast">
