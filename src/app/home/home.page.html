@@ -1,6 +1,12 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>G00425757</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="openFavourites()">
+        <ion-icon name="heart"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -17,15 +23,29 @@
     SEARCH
   </ion-button>
 
-  <h2>Today's Trending Movies</h2>
+  <h2>{{ heading }}</h2>
 
-  <ion-card *ngFor="let movie of movies">
-    <img [src]="movie.image" alt="Movie poster">
+  <ion-card *ngFor="let movie of movies" (click)="openMovie(movie)">
+
+    <img
+      *ngIf="movie.poster_path"
+      [src]="getPoster(movie.poster_path)"
+      alt="Movie poster">
+
+    <p *ngIf="!movie.poster_path">
+      No image
+    </p>
 
     <ion-card-header>
-      <ion-card-title>{{ movie.title }}</ion-card-title>
-      <ion-card-subtitle>{{ movie.year }}</ion-card-subtitle>
+      <ion-card-title>
+        {{ movie.title }}
+      </ion-card-title>
     </ion-card-header>
+
+    <ion-card-content>
+      {{ movie.overview }}
+    </ion-card-content>
+
   </ion-card>
 
 </ion-content>

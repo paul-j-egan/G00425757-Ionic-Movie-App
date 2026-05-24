@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { Router } from '@angular/router';
+
 import {
   IonHeader,
   IonToolbar,
@@ -11,8 +14,13 @@ import {
   IonCard,
   IonCardHeader,
   IonCardTitle,
-  IonCardSubtitle
+  IonCardContent,
+  IonIcon,
+  IonButtons
 } from '@ionic/angular/standalone';
+
+import { heart } from 'ionicons/icons';
+import { addIcons } from 'ionicons';
 
 @Component({
   selector: 'app-home',
@@ -22,6 +30,7 @@ import {
   imports: [
     CommonModule,
     FormsModule,
+    HttpClientModule,
     IonHeader,
     IonToolbar,
     IonTitle,
@@ -31,43 +40,71 @@ import {
     IonCard,
     IonCardHeader,
     IonCardTitle,
-    IonCardSubtitle
+    IonCardContent,
+    IonIcon,
+    IonButtons
   ]
 })
-export class HomePage {
+export class HomePage implements OnInit {
 
-  searchTerm: string = '';
+  searchTerm = '';
+  movies: any[] = [];
+  heading = "Today's Trending Movies";
 
-  allMovies = [
-    {
-      title: 'The Dark Knight',
-      year: 2008,
-      image: 'https://picsum.photos/200/300?1'
-    },
-    {
-      title: 'Inception',
-      year: 2010,
-      image: 'https://picsum.photos/200/300?2'
-    },
-    {
-      title: 'Interstellar',
-      year: 2014,
-      image: 'https://picsum.photos/200/300?3'
-    }
-  ];
+  apiKey = 'aec8cb7579247fdf0ce50a43711f7308';
+  imageBaseUrl = 'https://image.tmdb.org/t/p/w300';
 
-  movies = [...this.allMovies];
+  constructor(
+    private http: HttpClient,
+    private router: Router
+  ) {
+    addIcons({ heart });
+  }
+
+  ngOnInit() {
+    this.loadTrendingMovies();
+  }
+
+  loadTrendingMovies() {
+    const url =
+      `https://api.themoviedb.org/3/trending/movie/day?api_key=${this.apiKey}`;
+
+    this.http.get<any>(url).subscribe(response => {
+      this.movies = response.results;
+      this.heading = "Today's Trending Movies";
+    });
+  }
 
   searchMovies() {
-    const term = this.searchTerm.toLowerCase().trim();
+    const term = this.searchTerm.trim();
 
     if (term === '') {
-      this.movies = [...this.allMovies];
+      this.loadTrendingMovies();
       return;
     }
 
-    this.movies = this.allMovies.filter(movie =>
-      movie.title.toLowerCase().includes(term)
-    );
+    const url =
+      `https://api.themoviedb.org/3/search/movie?api_key=${this.apiKey}&query=${encodeURIComponent(term)}`;
+
+    this.http.get<any>(url).subscribe(response => {
+      this.movies = response.results;
+      this.heading = `${term} Movies`;
+    });
+  }
+
+  getPoster(path: string) {
+    if (!path) {
+      return '';
+    }
+
+    return this.imageBaseUrl + path;
+  }
+
+  openMovie(movie: any) {
+    console.log(movie);
+  }
+
+  openFavourites() {
+    alert('Favourites page coming next');
   }
 }
