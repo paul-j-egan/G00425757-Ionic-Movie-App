@@ -84,4 +84,12 @@ export class MovieDetailsPage implements OnInit {
       state: { person: person }
     });
   }
+
+  goHome() {
+    this.router.navigate(['/home']);
+  }
+
+  goFavourites() {
+    this.router.navigate(['/favourites']);
+  }
 }

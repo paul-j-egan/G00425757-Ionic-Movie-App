@@ -1,6 +1,12 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Movie Details</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="goHome()">🏠</ion-button>
+      <ion-button (click)="goFavourites()">❤️</ion-button>
+    </ion-buttons>
+
   </ion-toolbar>
 </ion-header>
 
@@ -23,15 +29,11 @@
   <h2>Cast</h2>
 
   <ion-card *ngFor="let person of cast" (click)="openPerson(person)">
+    <img *ngIf="person.profile_path"
+         [src]="getProfileUrl(person.profile_path)"
+         alt="Cast image">
 
-    <img
-      *ngIf="person.profile_path"
-      [src]="getProfileUrl(person.profile_path)"
-      alt="Cast image">
-
-    <p *ngIf="!person.profile_path">
-      No image
-    </p>
+    <p *ngIf="!person.profile_path">No image</p>
 
     <ion-card-header>
       <ion-card-title>{{ person.name }}</ion-card-title>
@@ -40,21 +42,16 @@
     <ion-card-content>
       Character: {{ person.character }}
     </ion-card-content>
-
   </ion-card>
 
   <h2>Crew</h2>
 
   <ion-card *ngFor="let person of crew" (click)="openPerson(person)">
+    <img *ngIf="person.profile_path"
+         [src]="getProfileUrl(person.profile_path)"
+         alt="Crew image">
 
-    <img
-      *ngIf="person.profile_path"
-      [src]="getProfileUrl(person.profile_path)"
-      alt="Crew image">
-
-    <p *ngIf="!person.profile_path">
-      No image
-    </p>
+    <p *ngIf="!person.profile_path">No image</p>
 
     <ion-card-header>
       <ion-card-title>{{ person.name }}</ion-card-title>
@@ -63,7 +60,6 @@
     <ion-card-content>
       Job: {{ person.job }}
     </ion-card-content>
-
   </ion-card>
 
 </ion-content>
