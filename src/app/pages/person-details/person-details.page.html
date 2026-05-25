@@ -1,13 +1,45 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>person-details</ion-title>
+    <ion-title>Person Details</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">person-details</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding" *ngIf="personDetails">
+
+  <img
+    *ngIf="personDetails.profile_path"
+    [src]="getProfileUrl(personDetails.profile_path)"
+    alt="Person image">
+
+  <p *ngIf="!personDetails.profile_path">
+    No image
+  </p>
+
+  <h1>{{ personDetails.name }}</h1>
+
+  <p *ngIf="personDetails.birthday">
+    <strong>Date of Birth:</strong>
+    {{ personDetails.birthday }}
+  </p>
+
+  <p *ngIf="personDetails.deathday">
+    <strong>Date of Death:</strong>
+    {{ personDetails.deathday }}
+  </p>
+
+  <p *ngIf="personDetails.also_known_as?.length">
+    <strong>AKA:</strong>
+    {{ personDetails.also_known_as.join(', ') }}
+  </p>
+
+  <p *ngIf="personDetails.place_of_birth">
+    <strong>Place of Birth:</strong>
+    {{ personDetails.place_of_birth }}
+  </p>
+
+  <p *ngIf="personDetails.biography">
+    <strong>Biography:</strong>
+    {{ personDetails.biography }}
+  </p>
+
 </ion-content>

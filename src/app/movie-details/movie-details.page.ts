@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-movie-details',
@@ -23,7 +24,10 @@ export class MovieDetailsPage implements OnInit {
 
   apiKey = 'aec8cb7579247fdf0ce50a43711f7308';
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private router: Router
+  ) {
     const nav = history.state;
     this.movie = nav.movie;
   }
@@ -66,14 +70,18 @@ export class MovieDetailsPage implements OnInit {
       JSON.parse(localStorage.getItem('favourites') || '[]');
 
     if (this.isFavourite) {
-      favourites =
-        favourites.filter((fav: any) => fav.id !== this.movie.id);
+      favourites = favourites.filter((fav: any) => fav.id !== this.movie.id);
     } else {
       favourites.push(this.movie);
     }
 
     localStorage.setItem('favourites', JSON.stringify(favourites));
-
     this.checkFavourite();
+  }
+
+  openPerson(person: any) {
+    this.router.navigate(['/person-details', person.id], {
+      state: { person: person }
+    });
   }
 }

@@ -22,7 +22,7 @@
 
   <h2>Cast</h2>
 
-  <ion-card *ngFor="let person of cast">
+  <ion-card *ngFor="let person of cast" (click)="openPerson(person)">
 
     <img
       *ngIf="person.profile_path"
@@ -45,7 +45,7 @@
 
   <h2>Crew</h2>
 
-  <ion-card *ngFor="let person of crew">
+  <ion-card *ngFor="let person of crew" (click)="openPerson(person)">
 
     <img
       *ngIf="person.profile_path"
