@@ -26,6 +26,7 @@ export class HomePage {
   movies: any[] = [];
   favouriteCount = 0;
   noResults = false;
+  sortOption = '';
 
   apiKey = 'aec8cb7579247fdf0ce50a43711f7308';
 
@@ -75,6 +76,27 @@ export class HomePage {
       this.noResults = this.movies.length === 0;
       loading.dismiss();
     });
+  }
+
+  sortMovies() {
+    if (this.sortOption === 'title') {
+      this.movies.sort((a, b) =>
+        a.title.localeCompare(b.title)
+      );
+    }
+
+    if (this.sortOption === 'popularity') {
+      this.movies.sort((a, b) =>
+        b.popularity - a.popularity
+      );
+    }
+
+    if (this.sortOption === 'release') {
+      this.movies.sort((a, b) =>
+        new Date(b.release_date).getTime() -
+        new Date(a.release_date).getTime()
+      );
+    }
   }
 
   getPosterUrl(path: string) {

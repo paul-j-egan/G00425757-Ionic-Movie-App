@@ -24,6 +24,27 @@
     SEARCH
   </ion-button>
 
+  <ion-item>
+    <ion-select
+      [(ngModel)]="sortOption"
+      placeholder="Sort Movies"
+      (ionChange)="sortMovies()">
+
+      <ion-select-option value="title">
+        Title A-Z
+      </ion-select-option>
+
+      <ion-select-option value="popularity">
+        Popularity
+      </ion-select-option>
+
+      <ion-select-option value="release">
+        Release Date
+      </ion-select-option>
+
+    </ion-select>
+  </ion-item>
+
   <h2>
     {{ searchTerm ? 'Search Results' : "Today's Trending Movies" }}
   </h2>
