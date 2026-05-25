@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
+import {
+  IonicModule,
+  LoadingController
+} from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -21,36 +24,56 @@ export class HomePage {
   studentNumber = 'G00425757';
   searchTerm = '';
   movies: any[] = [];
+  favouriteCount = 0;
+  noResults = false;
 
   apiKey = 'aec8cb7579247fdf0ce50a43711f7308';
 
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private loadingController: LoadingController
   ) {
     this.loadTrendingMovies();
+    this.updateFavouriteCount();
   }
 
-  loadTrendingMovies() {
+  async loadTrendingMovies() {
+    const loading = await this.loadingController.create({
+      message: 'Loading movies...'
+    });
+
+    await loading.present();
+
     const url =
       `https://api.themoviedb.org/3/trending/movie/day?api_key=${this.apiKey}`;
 
     this.http.get<any>(url).subscribe(response => {
       this.movies = response.results;
+      this.noResults = false;
+      loading.dismiss();
     });
   }
 
-  searchMovies() {
+  async searchMovies() {
     if (!this.searchTerm.trim()) {
       this.loadTrendingMovies();
       return;
     }
+
+    const loading = await this.loadingController.create({
+      message: 'Searching movies...'
+    });
+
+    await loading.present();
 
     const url =
       `https://api.themoviedb.org/3/search/movie?api_key=${this.apiKey}&query=${this.searchTerm}`;
 
     this.http.get<any>(url).subscribe(response => {
       this.movies = response.results;
+      this.noResults = this.movies.length === 0;
+      loading.dismiss();
     });
   }
 
@@ -66,5 +89,16 @@ export class HomePage {
 
   openFavourites() {
     this.router.navigate(['/favourites']);
+  }
+
+  updateFavouriteCount() {
+    const favourites =
+      JSON.parse(localStorage.getItem('favourites') || '[]');
+
+    this.favouriteCount = favourites.length;
+  }
+
+  ionViewWillEnter() {
+    this.updateFavouriteCount();
   }
 }

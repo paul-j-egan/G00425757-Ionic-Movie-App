@@ -4,7 +4,7 @@
 
     <ion-buttons slot="end">
       <ion-button (click)="openFavourites()">
-        ❤️
+        ❤️ {{ favouriteCount }}
       </ion-button>
     </ion-buttons>
 
@@ -27,6 +27,10 @@
   <h2>
     {{ searchTerm ? 'Search Results' : "Today's Trending Movies" }}
   </h2>
+
+  <p *ngIf="noResults">
+    No movies found matching your search.
+  </p>
 
   <ion-card
     *ngFor="let movie of movies"

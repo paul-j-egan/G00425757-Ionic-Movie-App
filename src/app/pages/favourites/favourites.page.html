@@ -1,6 +1,11 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Favourites</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="goHome()">🏠</ion-button>
+    </ion-buttons>
+
   </ion-toolbar>
 </ion-header>
 
@@ -27,10 +32,12 @@
       {{ movie.overview }}
     </ion-card-content>
 
-    <ion-button
-      expand="block"
-      (click)="openMovie(movie)">
+    <ion-button expand="block" (click)="openMovie(movie)">
       Details
+    </ion-button>
+
+    <ion-button expand="block" color="danger" (click)="removeFavourite(movie.id)">
+      Remove Favourite
     </ion-button>
 
   </ion-card>

@@ -37,4 +37,20 @@ export class FavouritesPage {
       state: { movie: movie }
     });
   }
+
+  removeFavourite(movieId: number) {
+    let favourites =
+      JSON.parse(localStorage.getItem('favourites') || '[]');
+
+    favourites =
+      favourites.filter((movie: any) => movie.id !== movieId);
+
+    localStorage.setItem('favourites', JSON.stringify(favourites));
+
+    this.loadFavourites();
+  }
+
+  goHome() {
+    this.router.navigate(['/home']);
+  }
 }
