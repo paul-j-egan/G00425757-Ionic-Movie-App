@@ -1,6 +1,13 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>{{ studentNumber }}</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="openFavourites()">
+        ❤️
+      </ion-button>
+    </ion-buttons>
+
   </ion-toolbar>
 </ion-header>
 
@@ -29,6 +36,10 @@
       *ngIf="movie.poster_path"
       [src]="getPosterUrl(movie.poster_path)"
       alt="Movie poster">
+
+    <p *ngIf="!movie.poster_path">
+      No image
+    </p>
 
     <ion-card-header>
       <ion-card-title>

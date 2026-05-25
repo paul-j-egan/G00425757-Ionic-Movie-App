@@ -1,20 +1,40 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { IonicModule } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-favourites',
   templateUrl: './favourites.page.html',
   styleUrls: ['./favourites.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [
+    CommonModule,
+    IonicModule
+  ]
 })
-export class FavouritesPage implements OnInit {
+export class FavouritesPage {
 
-  constructor() { }
+  favourites: any[] = [];
 
-  ngOnInit() {
+  constructor(private router: Router) {}
+
+  ionViewWillEnter() {
+    this.loadFavourites();
   }
 
+  loadFavourites() {
+    this.favourites =
+      JSON.parse(localStorage.getItem('favourites') || '[]');
+  }
+
+  getPosterUrl(path: string) {
+    return `https://image.tmdb.org/t/p/w300${path}`;
+  }
+
+  openMovie(movie: any) {
+    this.router.navigate(['/movie-details'], {
+      state: { movie: movie }
+    });
+  }
 }

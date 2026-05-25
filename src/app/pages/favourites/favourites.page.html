@@ -1,13 +1,38 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>favourites</ion-title>
+    <ion-title>Favourites</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">favourites</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+
+  <ion-card *ngFor="let movie of favourites">
+
+    <img
+      *ngIf="movie.poster_path"
+      [src]="getPosterUrl(movie.poster_path)"
+      alt="Movie poster">
+
+    <p *ngIf="!movie.poster_path">
+      No image
+    </p>
+
+    <ion-card-header>
+      <ion-card-title>
+        {{ movie.title }}
+      </ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      {{ movie.overview }}
+    </ion-card-content>
+
+    <ion-button
+      expand="block"
+      (click)="openMovie(movie)">
+      Details
+    </ion-button>
+
+  </ion-card>
+
 </ion-content>

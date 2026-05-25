@@ -63,4 +63,8 @@ export class HomePage {
       state: { movie: movie }
     });
   }
+
+  openFavourites() {
+    this.router.navigate(['/favourites']);
+  }
 }
