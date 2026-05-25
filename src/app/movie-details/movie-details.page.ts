@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ToastController } from '@ionic/angular';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
 
@@ -26,7 +26,8 @@ export class MovieDetailsPage implements OnInit {
 
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private toastController: ToastController
   ) {
     const nav = history.state;
     this.movie = nav.movie;
@@ -41,19 +42,23 @@ export class MovieDetailsPage implements OnInit {
 
   loadCredits() {
     const url =
-      `https://api.themoviedb.org/3/movie/${this.movie.id}/credits?api_key=${this.apiKey}`;
+      `https://api.themoviedb.org/3/movie/${this.movie.id}?api_key=${this.apiKey}`;
 
     this.http.get<any>(url).subscribe(response => {
+      this.movie = response;
+    });
+
+    const creditsUrl =
+      `https://api.themoviedb.org/3/movie/${this.movie.id}/credits?api_key=${this.apiKey}`;
+
+    this.http.get<any>(creditsUrl).subscribe(response => {
       this.cast = response.cast;
       this.crew = response.crew;
     });
   }
 
   getProfileUrl(path: string) {
-    if (!path) {
-      return '';
-    }
-
+    if (!path) return '';
     return `https://image.tmdb.org/t/p/w200${path}`;
   }
 
@@ -65,18 +70,30 @@ export class MovieDetailsPage implements OnInit {
       favourites.some((fav: any) => fav.id === this.movie.id);
   }
 
-  toggleFavourite() {
+  async toggleFavourite() {
     let favourites =
       JSON.parse(localStorage.getItem('favourites') || '[]');
 
+    let message = '';
+
     if (this.isFavourite) {
-      favourites = favourites.filter((fav: any) => fav.id !== this.movie.id);
+      favourites =
+        favourites.filter((fav: any) => fav.id !== this.movie.id);
+      message = 'Removed from favourites';
     } else {
       favourites.push(this.movie);
+      message = 'Added to favourites';
     }
 
     localStorage.setItem('favourites', JSON.stringify(favourites));
     this.checkFavourite();
+
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 1500
+    });
+
+    await toast.present();
   }
 
   openPerson(person: any) {

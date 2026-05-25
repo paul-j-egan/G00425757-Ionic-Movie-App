@@ -1,30 +1,31 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Person Details</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="goHome()">🏠</ion-button>
+      <ion-button (click)="goFavourites()">❤️</ion-button>
+    </ion-buttons>
+
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding" *ngIf="personDetails">
 
-  <img
-    *ngIf="personDetails.profile_path"
-    [src]="getProfileUrl(personDetails.profile_path)"
-    alt="Person image">
+  <img *ngIf="personDetails.profile_path"
+       [src]="getProfileUrl(personDetails.profile_path)"
+       alt="Person image">
 
-  <p *ngIf="!personDetails.profile_path">
-    No image
-  </p>
+  <p *ngIf="!personDetails.profile_path">No image</p>
 
   <h1>{{ personDetails.name }}</h1>
 
   <p *ngIf="personDetails.birthday">
-    <strong>Date of Birth:</strong>
-    {{ personDetails.birthday }}
+    <strong>Date of Birth:</strong> {{ personDetails.birthday }}
   </p>
 
   <p *ngIf="personDetails.deathday">
-    <strong>Date of Death:</strong>
-    {{ personDetails.deathday }}
+    <strong>Date of Death:</strong> {{ personDetails.deathday }}
   </p>
 
   <p *ngIf="personDetails.also_known_as?.length">
@@ -44,25 +45,16 @@
 
   <h2>Other Movies</h2>
 
-  <ion-card
-    *ngFor="let movie of movies"
-    (click)="openMovie(movie)">
+  <ion-card *ngFor="let movie of movies" (click)="openMovie(movie)">
+    <img *ngIf="movie.poster_path"
+         [src]="getPosterUrl(movie.poster_path)"
+         alt="Movie poster">
 
-    <img
-      *ngIf="movie.poster_path"
-      [src]="getPosterUrl(movie.poster_path)"
-      alt="Movie poster">
-
-    <p *ngIf="!movie.poster_path">
-      No image
-    </p>
+    <p *ngIf="!movie.poster_path">No image</p>
 
     <ion-card-header>
-      <ion-card-title>
-        {{ movie.title }}
-      </ion-card-title>
+      <ion-card-title>{{ movie.title }}</ion-card-title>
     </ion-card-header>
-
   </ion-card>
 
 </ion-content>
