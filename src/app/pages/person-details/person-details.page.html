@@ -42,4 +42,27 @@
     {{ personDetails.biography }}
   </p>
 
+  <h2>Other Movies</h2>
+
+  <ion-card
+    *ngFor="let movie of movies"
+    (click)="openMovie(movie)">
+
+    <img
+      *ngIf="movie.poster_path"
+      [src]="getPosterUrl(movie.poster_path)"
+      alt="Movie poster">
+
+    <p *ngIf="!movie.poster_path">
+      No image
+    </p>
+
+    <ion-card-header>
+      <ion-card-title>
+        {{ movie.title }}
+      </ion-card-title>
+    </ion-card-header>
+
+  </ion-card>
+
 </ion-content>
